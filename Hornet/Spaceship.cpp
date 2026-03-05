@@ -3,6 +3,7 @@
 #include "HtAudio.h"
 #include "Bullet.h"
 #include "ObjectManager.h"
+#include "Explosion.h"
 
 const double Spaceship::ACCELERATION = 500;
 const double Spaceship::TURNSPEED = 90;
@@ -28,6 +29,10 @@ void Spaceship::Initialise()
 	m_scale = SIZE;
 	SetCollidable();
 	m_shootDelay = 0;
+
+	m_explosionSound = HtAudio::instance.LoadSound("assets/explosion1.wav");
+	m_explosionSoundChannel = -1;
+	m_isExplosionPlaying = false;
 }
 
 void Spaceship::ProcessCollision(GameObject& other)
@@ -35,6 +40,26 @@ void Spaceship::ProcessCollision(GameObject& other)
 	if (other.GetType() == ObjectType::ROCK)
 	{
 		Deactivate();
+		Explosion* pExplosion = new Explosion;
+		pExplosion->Initialise(m_position);
+		ObjectManager::instance.AddItem(pExplosion);
+		if (m_isExplosionPlaying == false)
+		{
+			m_explosionSoundChannel = HtAudio::instance.Play(m_explosionSound, true);
+			m_isExplosionPlaying = true;
+		}
+		
+		if (m_isExplosionPlaying == true)
+		{
+			HtAudio::instance.Stop(m_explosionSoundChannel);
+			m_isExplosionPlaying = false;
+		}
+		
+		Event evt;
+		evt.type = EventType::SPACESHIPDESTROYED;
+		evt.pSource = this;
+		evt.position = m_position;
+		ObjectManager::instance.HandleEvent(evt);
 	}
 }
 
@@ -58,13 +83,10 @@ void Spaceship::Update(double frametime)
 			m_thrustSoundChannel = HtAudio::instance.Play(m_thrustSound, true);
 			m_isThrustPlaying = true;
 		}
-		else
+		else if (m_isThrustPlaying == true)
 		{
-			if (m_isThrustPlaying == true)
-			{
-				HtAudio::instance.Stop(m_thrustSoundChannel);
-				m_isThrustPlaying = false;
-			}
+			HtAudio::instance.Stop(m_thrustSoundChannel);
+			m_isThrustPlaying = false;
 		}
 	}
 	m_shootDelay = m_shootDelay - frametime;

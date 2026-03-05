@@ -4,6 +4,7 @@
 #include "HtInput.h"
 #include "Rock.h"
 #include "Spaceship.h"
+#include "GameManager.h"
 
 void Game::StartOfProgram()
 {
@@ -33,6 +34,10 @@ void Game::StartOfGame()
     Spaceship* pSpaceship = new Spaceship;
     pSpaceship->Initialise();
     ObjectManager::instance.AddItem(pSpaceship);
+
+    GameManager* pManager = new GameManager();
+    pManager->Initialise();
+    ObjectManager::instance.AddItem(pManager);
    
     m_gameOver = false;
 

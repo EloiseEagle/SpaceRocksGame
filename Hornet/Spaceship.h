@@ -18,6 +18,9 @@ private:
     SoundIndex m_zapSound;
     bool m_isZapPlaying;
     int m_zapSoundChannel;
+    SoundIndex m_explosionSound;
+    int m_explosionSoundChannel;
+    bool m_isExplosionPlaying;
     double m_shootDelay;
 public:
     Spaceship();

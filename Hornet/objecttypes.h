@@ -9,5 +9,6 @@ enum class ObjectType {
 	ROCKET,
 	ROCK,
 	TRANSPORT,
-	BACKGROUND
+	BACKGROUND,
+	GAMEMANAGER
 };

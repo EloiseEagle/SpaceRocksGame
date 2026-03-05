@@ -1,4 +1,5 @@
 #include "Rock.h"
+#include "ObjectManager.h"
 
 Rock::Rock(): GameObject(ObjectType::ROCK)
 {
@@ -39,6 +40,11 @@ void Rock::ProcessCollision(GameObject& other)
 	if (other.GetType() == ObjectType::BULLET)
 	{
 		Deactivate();
+		Event evt;
+		evt.type = EventType::ROCKDESTROYED;
+		evt.pSource = this;
+		evt.position = m_position;
+		ObjectManager::instance.HandleEvent(evt);
 	}
 }
 
@@ -70,6 +76,7 @@ void Rock::Initialise()
 	
 	SetCollidable();
 	
+	SetHandleEvents();
 }
 
 IShape2D& Rock::GetCollisionShape()

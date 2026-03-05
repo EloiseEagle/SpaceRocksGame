@@ -142,7 +142,9 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="ErrorLogger.cpp" />
     <ClCompile Include="Event.cpp" />
+    <ClCompile Include="Explosion.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTimer.cpp" />
     <ClCompile Include="HornetApp.cpp" />
@@ -165,7 +167,9 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="ErrorLogger.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="Explosion.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTimer.h" />
     <ClInclude Include="HornetApp.h" />
