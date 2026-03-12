@@ -3,7 +3,6 @@
 #include "ObjectManager.h"
 #include "HtInput.h"
 #include "Rock.h"
-#include "Spaceship.h"
 #include "GameManager.h"
 
 void Game::StartOfProgram()
@@ -29,11 +28,6 @@ void Game::StartOfGame()
         pRock->Initialise();
         ObjectManager::instance.AddItem(pRock);
     }
-    
-
-    Spaceship* pSpaceship = new Spaceship;
-    pSpaceship->Initialise();
-    ObjectManager::instance.AddItem(pSpaceship);
 
     GameManager* pManager = new GameManager();
     pManager->Initialise();

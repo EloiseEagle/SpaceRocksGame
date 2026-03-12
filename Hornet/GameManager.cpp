@@ -1,5 +1,7 @@
 #include "GameManager.h"
 #include "HtGraphics.h"
+#include "Spaceship.h"
+#include "ObjectManager.h"
 
 GameManager::GameManager() : GameObject(ObjectType::GAMEMANAGER)
 {
@@ -8,11 +10,18 @@ GameManager::GameManager() : GameObject(ObjectType::GAMEMANAGER)
 void GameManager::Initialise()
 {
 	m_score = 0;
-	m_lives = 3;
+	m_lives = 2;
 	m_level = 1;
 	m_image = HtGraphics::instance.LoadPicture("assets/ship.bmp");
 
 	SetDrawDepth(10);
+
+	SetHandleEvents();
+}
+
+void GameManager::Update(double frametime)
+{
+
 }
 
 void GameManager::HandleEvent(Event evt)
@@ -24,6 +33,13 @@ void GameManager::HandleEvent(Event evt)
 	if (evt.type == EventType::SPACESHIPDESTROYED)
 	{
 		m_lives = m_lives - 1;
+		if (m_lives > 1)
+		{
+			Spaceship* pSpaceship = new Spaceship;
+			pSpaceship->Initialise();
+			ObjectManager::instance.AddItem(pSpaceship);
+		}
+		
 	}
 }
 
@@ -36,9 +52,11 @@ void GameManager::Render()
 	HtGraphics::instance.WriteIntAligned(-1300, 900, m_level, HtGraphics::WHITE, 1, 2);
 
 	HtGraphics::instance.WriteTextAligned(1100, 750, "Lives: ", HtGraphics::WHITE, 1, 2);
-	if (m_lives == 1)
+	if (m_lives == 3)
 	{
 		HtGraphics::instance.DrawAt(Vector2D(1450.0, 690.0), m_image, 1.5, 0, 0, FlipType::NONE);
+		HtGraphics::instance.DrawAt(Vector2D(1550.0, 690.0), m_image, 1.5, 0, 0, FlipType::NONE);
+		HtGraphics::instance.DrawAt(Vector2D(1650.0, 690.0), m_image, 1.5, 0, 0, FlipType::NONE);
 	}
 	else if (m_lives == 2)
 	{
@@ -48,8 +66,6 @@ void GameManager::Render()
 	else
 	{
 		HtGraphics::instance.DrawAt(Vector2D(1450.0, 690.0), m_image, 1.5, 0, 0, FlipType::NONE);
-		HtGraphics::instance.DrawAt(Vector2D(1550.0, 690.0), m_image, 1.5, 0, 0, FlipType::NONE);
-		HtGraphics::instance.DrawAt(Vector2D(1650.0, 690.0), m_image, 1.5, 0, 0, FlipType::NONE);
 	}
 }
 

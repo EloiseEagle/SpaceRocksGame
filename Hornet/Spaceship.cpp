@@ -23,6 +23,7 @@ void Spaceship::Initialise()
 	LoadImage("assets/ship.bmp");
 	m_thrustSound = HtAudio::instance.LoadSound("assets/thrustloop.wav");
 	m_zapSound = HtAudio::instance.LoadSound("assets/zap.wav");
+	m_isExplosionPlaying = false;
 	m_isThrustPlaying = false;
 	m_thrustSoundChannel = -1;
 	m_zapSoundChannel = -1;
@@ -43,17 +44,8 @@ void Spaceship::ProcessCollision(GameObject& other)
 		Explosion* pExplosion = new Explosion;
 		pExplosion->Initialise(m_position);
 		ObjectManager::instance.AddItem(pExplosion);
-		if (m_isExplosionPlaying == false)
-		{
-			m_explosionSoundChannel = HtAudio::instance.Play(m_explosionSound, true);
-			m_isExplosionPlaying = true;
-		}
+		HtAudio::instance.Play(m_explosionSound);
 		
-		if (m_isExplosionPlaying == true)
-		{
-			HtAudio::instance.Stop(m_explosionSoundChannel);
-			m_isExplosionPlaying = false;
-		}
 		
 		Event evt;
 		evt.type = EventType::SPACESHIPDESTROYED;
@@ -83,7 +75,10 @@ void Spaceship::Update(double frametime)
 			m_thrustSoundChannel = HtAudio::instance.Play(m_thrustSound, true);
 			m_isThrustPlaying = true;
 		}
-		else if (m_isThrustPlaying == true)
+	}
+	else
+	{
+		if (m_isThrustPlaying == true)
 		{
 			HtAudio::instance.Stop(m_thrustSoundChannel);
 			m_isThrustPlaying = false;
@@ -98,19 +93,8 @@ void Spaceship::Update(double frametime)
 		pBullet->Initialise(m_position, bulletDirection);
 		ObjectManager::instance.AddItem(pBullet);
 		m_shootDelay = 0.5;
-		if (m_isZapPlaying == false)
-		{
-			m_zapSoundChannel = HtAudio::instance.Play(m_zapSound, true);
-			m_isZapPlaying = true;
-		}
-		else
-		{
-			if (m_isZapPlaying == true)
-			{
-				HtAudio::instance.Stop(m_zapSoundChannel);
-				m_isZapPlaying = false;
-			}
-		}
+		HtAudio::instance.Play(m_zapSound);
+		
 	}
 	
 	

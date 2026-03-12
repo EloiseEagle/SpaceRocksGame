@@ -14,6 +14,8 @@ public:
     void ProcessCollision(GameObject& other) override;
 
     void Initialise();
+    
+    void Initialise(Vector2D position, double angle, double size);
 
     IShape2D& GetCollisionShape() override;
 };

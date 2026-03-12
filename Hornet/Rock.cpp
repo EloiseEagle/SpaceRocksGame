@@ -31,7 +31,7 @@ void Rock::Update(double frametime)
 		m_velocity.YValue = m_velocity.YValue * -1;
 	}
 
-	m_collisionShape.PlaceAt(m_position, 64);
+	m_collisionShape.PlaceAt(m_position, 64*m_scale);
 
 }
 
@@ -40,6 +40,17 @@ void Rock::ProcessCollision(GameObject& other)
 	if (other.GetType() == ObjectType::BULLET)
 	{
 		Deactivate();
+		if (m_scale > 0.8)
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				Rock* pRock = new Rock;
+				pRock->Initialise(m_position, m_angle, m_scale);
+				ObjectManager::instance.AddItem(pRock);
+				m_angle = m_angle + 120;
+			}
+		}
+
 		Event evt;
 		evt.type = EventType::ROCKDESTROYED;
 		evt.pSource = this;
@@ -76,6 +87,40 @@ void Rock::Initialise()
 	
 	SetCollidable();
 	
+	SetHandleEvents();
+}
+
+void Rock::Initialise(Vector2D position, double angle, double size)
+{
+	m_position = position;
+
+	m_angle = angle;
+
+	m_velocity.setBearing(rand() % 360, rand() % 190 + 40);
+	
+	m_scale = size / 2;
+
+	int r = rand() % 4;
+	if (r == 0)
+	{
+		LoadImage("assets/rock1.bmp");
+	}
+	if (r == 1)
+	{
+		LoadImage("assets/rock2.bmp");
+	}
+	if (r == 2)
+	{
+		LoadImage("assets/rock3.bmp");
+	}
+	if (r == 3)
+	{
+		LoadImage("assets/rock4.bmp");
+	}
+	
+
+	SetCollidable();
+
 	SetHandleEvents();
 }
 
